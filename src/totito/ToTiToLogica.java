@@ -13,26 +13,24 @@ import java.util.Scanner;
  */
 public class ToTiToLogica {
 
-    private int counter;
     private char[] tableroJuego = new char[10];
     private char JugadorActual;
 
     public ToTiToLogica() {
-        newBoard();
-        play();
+        inicializarTablero();
+        jugar();
     }
 
-    private void newBoard() {
+    private void inicializarTablero() {
         char posndef[] = {'0', '1', '2', '3', '4', '5', '6', '7', '8', '9'};
         int i;
-        counter = 0;
         JugadorActual = 'X';
         for (i = 1; i < 10; i++) {
             tableroJuego[i] = posndef[i];
         }
     }
 
-    private String currentBoard() {
+    private void dibujarTablero() {
         System.out.print("\n");
         System.out.println("\t\t" + "  " + tableroJuego[1] + " | " + tableroJuego[2] + " | " + tableroJuego[3]);
         System.out.println("\t\t ___|___|___ ");
@@ -40,43 +38,42 @@ public class ToTiToLogica {
         System.out.println("\t\t ___|___|___ ");
         System.out.println("\t\t" + "  " + tableroJuego[7] + " | " + tableroJuego[8] + " | " + tableroJuego[9]);
         System.out.print(" \t\t    |   |   ");
-        return "currentBoard";
     }
 
-    private void play() {
-        int spot;
+    private void jugar() {
+        int posicion;
         char blank = ' ';
 
-        System.out.println("Player " + getPlayer() + " will go first and be the letter 'X'");
-        currentBoard();
+        System.out.println("Jugadr del primer moviento es " + getJugadorActual());
+        dibujarTablero();
         do {
-            // display current board
-
-            System.out.println("\n\n Player " + getPlayer() + " choose a posn.");
+            System.out.print("\n\n  jugador " + getJugadorActual() + " elija una posicion -> ");
 
             boolean posTaken = true;
             while (posTaken) {
-                // System.out.println( "position is taken, please enter a valid space");
-                Scanner in = new Scanner(System.in);
-                spot = in.nextInt();
-                posTaken = checkPosn(spot);
-                if (!posTaken) {
-                    tableroJuego[spot] = getPlayer();
-                } else {
-                    System.out.println("That posn is already taken, please choose another");
+                try {
+                    Scanner in = new Scanner(System.in);
+                    posicion = in.nextInt();
+                    posTaken = verificarPosicion(posicion);
+                    if (!posTaken) {
+                        tableroJuego[posicion] = getJugadorActual();
+                    } else {
+                        System.out.println("Esta posicion ya esta ocupada, Elije otra!");
+                    }
+                } catch (Exception e) {
+                    System.out.println("Solo se admiten tipos numericos \nEntrada menor o igual a 9");
+                    System.out.print(" -> jugador " + getJugadorActual() + " elija una posicion -> ");
                 }
             }
 
-            System.out.println("Nice move.");
+            dibujarTablero();
+            turnoJugador();
 
-            currentBoard();              // display current board
-
-            nextPlayer();
-        } while (checkWinner() == blank);
+        } while (/*!verificarJugador2(getJugadorActual(), 1)*/verificarGanador() == blank);
 
     }
 
-    private char checkWinner() {
+    private char verificarGanador() {
         char Ganador = ' ';
 
         //Verificacion de las X
@@ -105,7 +102,7 @@ public class ToTiToLogica {
             Ganador = 'X';
         }
         if (Ganador == 'X') {
-            System.out.println("Player1 wins the game.");
+            System.out.println("\n El jugador X gana el juego.");
             return Ganador;
         }
 
@@ -135,11 +132,10 @@ public class ToTiToLogica {
             Ganador = 'O';
         }
         if (Ganador == 'O') {
-            System.out.println("Player2 wins the game.");
+            System.out.println("\n El jugador O gana el juego.");
             return Ganador;
         }
 
-        // check for Tie
         for (int i = 1; i < 10; i++) {
             if (tableroJuego[i] == 'X' || tableroJuego[i] == 'O') {
                 if (i == 9) {
@@ -147,7 +143,6 @@ public class ToTiToLogica {
                     System.out.println(" Game is stalemate ");
                     return Draw;
                 }
-                continue;
             } else {
                 break;
             }
@@ -157,8 +152,45 @@ public class ToTiToLogica {
         return Ganador;
     }
 
-    private boolean checkPosn(int spot) {
+    private boolean verificarJugador2(char jugador, int i) {
+        boolean retorno = false;
 
+        //Verificacion de las X
+        if (tableroJuego[1] == jugador && tableroJuego[2] == jugador && tableroJuego[3] == jugador) {
+            retorno = true;
+        }
+        if (tableroJuego[4] == jugador && tableroJuego[5] == jugador && tableroJuego[6] == jugador) {
+            retorno = true;
+        }
+        if (tableroJuego[7] == jugador && tableroJuego[8] == jugador && tableroJuego[9] == jugador) {
+            retorno = true;
+        }
+        if (tableroJuego[1] == jugador && tableroJuego[4] == jugador && tableroJuego[7] == jugador) {
+            retorno = true;
+        }
+        if (tableroJuego[2] == jugador && tableroJuego[5] == jugador && tableroJuego[8] == jugador) {
+            retorno = true;
+        }
+        if (tableroJuego[3] == jugador && tableroJuego[6] == jugador && tableroJuego[9] == jugador) {
+            retorno = true;
+        }
+        if (tableroJuego[1] == jugador && tableroJuego[5] == jugador && tableroJuego[9] == jugador) {
+            retorno = true;
+        }
+        if (tableroJuego[3] == jugador && tableroJuego[5] == jugador && tableroJuego[7] == jugador) {
+            retorno = true;
+        }
+
+        if (!retorno && i == 1) {
+            jugador = (jugador == 'X') ? 'O' : 'X';
+            verificarJugador2(jugador, 2);
+        }
+
+        System.out.println("Ganador " + jugador);
+        return retorno;
+    }
+
+    private boolean verificarPosicion(int spot) {
         if (tableroJuego[spot] == 'X' || tableroJuego[spot] == 'O') {
             return true;
         } else {
@@ -167,7 +199,7 @@ public class ToTiToLogica {
 
     }
 
-    private void nextPlayer() {
+    private void turnoJugador() {
         if (JugadorActual == 'X') {
             JugadorActual = 'O';
         } else {
@@ -180,7 +212,7 @@ public class ToTiToLogica {
         return "Tic Tac Toe";
     }
 
-    private char getPlayer() {
+    private char getJugadorActual() {
         return JugadorActual;
     }
 }
