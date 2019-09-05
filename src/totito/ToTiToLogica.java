@@ -33,11 +33,11 @@ public class ToTiToLogica {
     private void dibujarTablero() {
         System.out.print("\n");
         System.out.println("\t\t" + "  " + tableroJuego[1] + " | " + tableroJuego[2] + " | " + tableroJuego[3]);
-        System.out.println("\t\t ___|___|___ ");
+        System.out.println("\t\t ---|---|--- ");
         System.out.println("\t\t" + "  " + tableroJuego[4] + " | " + tableroJuego[5] + " | " + tableroJuego[6]);
-        System.out.println("\t\t ___|___|___ ");
-        System.out.println("\t\t" + "  " + tableroJuego[7] + " | " + tableroJuego[8] + " | " + tableroJuego[9]);
-        System.out.print(" \t\t    |   |   ");
+        System.out.println("\t\t ---|---|--- ");
+        System.out.print("\t\t" + "  " + tableroJuego[7] + " | " + tableroJuego[8] + " | " + tableroJuego[9]);
+        //System.out.print(" \t\t    |   |   ");
     }
 
     private void jugar() {
