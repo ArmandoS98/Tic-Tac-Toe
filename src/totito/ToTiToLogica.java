@@ -69,90 +69,11 @@ public class ToTiToLogica {
             dibujarTablero();
             turnoJugador();
 
-        } while (/*!verificarJugador2(getJugadorActual(), 1)*/verificarGanador() == blank);
+        } while (!verificarJugador2('X') /*verificarGanador() == blank*/);
 
     }
 
-    private char verificarGanador() {
-        char Ganador = ' ';
-
-        //Verificacion de las X
-        if (tableroJuego[1] == 'X' && tableroJuego[2] == 'X' && tableroJuego[3] == 'X') {
-            Ganador = 'X';
-        }
-        if (tableroJuego[4] == 'X' && tableroJuego[5] == 'X' && tableroJuego[6] == 'X') {
-            Ganador = 'X';
-        }
-        if (tableroJuego[7] == 'X' && tableroJuego[8] == 'X' && tableroJuego[9] == 'X') {
-            Ganador = 'X';
-        }
-        if (tableroJuego[1] == 'X' && tableroJuego[4] == 'X' && tableroJuego[7] == 'X') {
-            Ganador = 'X';
-        }
-        if (tableroJuego[2] == 'X' && tableroJuego[5] == 'X' && tableroJuego[8] == 'X') {
-            Ganador = 'X';
-        }
-        if (tableroJuego[3] == 'X' && tableroJuego[6] == 'X' && tableroJuego[9] == 'X') {
-            Ganador = 'X';
-        }
-        if (tableroJuego[1] == 'X' && tableroJuego[5] == 'X' && tableroJuego[9] == 'X') {
-            Ganador = 'X';
-        }
-        if (tableroJuego[3] == 'X' && tableroJuego[5] == 'X' && tableroJuego[7] == 'X') {
-            Ganador = 'X';
-        }
-        if (Ganador == 'X') {
-            System.out.println("\n El jugador X gana el juego.");
-            return Ganador;
-        }
-
-        // Verificacion de las O
-        if (tableroJuego[1] == 'O' && tableroJuego[2] == 'O' && tableroJuego[3] == 'O') {
-            Ganador = 'O';
-        }
-        if (tableroJuego[4] == 'O' && tableroJuego[5] == 'O' && tableroJuego[6] == 'O') {
-            Ganador = 'O';
-        }
-        if (tableroJuego[7] == 'O' && tableroJuego[8] == 'O' && tableroJuego[9] == 'O') {
-            Ganador = 'O';
-        }
-        if (tableroJuego[1] == 'O' && tableroJuego[4] == 'O' && tableroJuego[7] == 'O') {
-            Ganador = 'O';
-        }
-        if (tableroJuego[2] == 'O' && tableroJuego[5] == 'O' && tableroJuego[8] == 'O') {
-            Ganador = 'O';
-        }
-        if (tableroJuego[3] == 'O' && tableroJuego[6] == 'O' && tableroJuego[9] == 'O') {
-            Ganador = 'O';
-        }
-        if (tableroJuego[1] == 'O' && tableroJuego[5] == 'O' && tableroJuego[9] == 'O') {
-            Ganador = 'O';
-        }
-        if (tableroJuego[3] == 'O' && tableroJuego[5] == 'O' && tableroJuego[7] == 'O') {
-            Ganador = 'O';
-        }
-        if (Ganador == 'O') {
-            System.out.println("\n El jugador O gana el juego.");
-            return Ganador;
-        }
-
-        for (int i = 1; i < 10; i++) {
-            if (tableroJuego[i] == 'X' || tableroJuego[i] == 'O') {
-                if (i == 9) {
-                    char Draw = 'D';
-                    System.out.println(" Game is stalemate ");
-                    return Draw;
-                }
-            } else {
-                break;
-            }
-
-        }
-
-        return Ganador;
-    }
-
-    private boolean verificarJugador2(char jugador, int i) {
+    private boolean verificarJugador2(char jugador/*, int i*/) {
         boolean retorno = false;
 
         //Verificacion de las X
@@ -181,12 +102,15 @@ public class ToTiToLogica {
             retorno = true;
         }
 
-        if (!retorno && i == 1) {
-            jugador = (jugador == 'X') ? 'O' : 'X';
-            verificarJugador2(jugador, 2);
+        if (retorno) {
+            System.out.println("");
+            System.out.println("Ganador " + jugador);
+        } else if (jugador == 'X') {
+            retorno = verificarJugador2('O');
+            if (!retorno) {
+                retorno = empate();
+            }
         }
-
-        System.out.println("Ganador " + jugador);
         return retorno;
     }
 
@@ -214,5 +138,20 @@ public class ToTiToLogica {
 
     private char getJugadorActual() {
         return JugadorActual;
+    }
+
+    private boolean empate() {
+        boolean retorno = false;
+        for (int i = 1; i < 10; i++) {
+            if (tableroJuego[i] == 'X' || tableroJuego[i] == 'O') {
+                if (i == 9) {
+                    System.out.println("\n Empate");
+                    retorno = true;
+                }
+            } else {
+                break;
+            }
+        }
+        return retorno;
     }
 }
