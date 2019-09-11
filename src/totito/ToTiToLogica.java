@@ -5,7 +5,10 @@ import java.util.Scanner;
 /**
  * Programa ToTiTo / Tic Tac Toe
  *
- * @author asantos Fecha 11/09/2019 Ingenieria En Sitemas Programacion Avanzada
+ * @author asantos 
+ * Fecha 11/09/2019 
+ * Ingenieria En Sitemas 
+ * Programacion Avanzada
  */
 public class ToTiToLogica {
 
@@ -101,6 +104,12 @@ public class ToTiToLogica {
         System.out.println("------------------------------------");
     }
 
+    /**
+     * Validacion del ganador o Emparte
+     *
+     * @param jugador puede ser [X/O]
+     * @return falso o verdadero
+     */
     private boolean hayGanador(char jugador/*, int i*/) {
         boolean retorno = false;
 
@@ -143,6 +152,12 @@ public class ToTiToLogica {
         return retorno;
     }
 
+    /**
+     * Validar que la posicion no este ocupada
+     *
+     * @param spot recibe el numero ingresado por el usuario
+     * @return falso o verdadero
+     */
     private boolean verificarPosicion(int spot) {
         if (tableroJuego[spot] == 'X' || tableroJuego[spot] == 'O') {
             return true;
