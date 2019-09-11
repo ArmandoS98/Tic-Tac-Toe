@@ -1,20 +1,19 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package totito;
 
 import java.util.Scanner;
 
 /**
+ * Programa ToTiTo / Tic Tac Toe
  *
- * @author asantos
+ * @author asantos Fecha 11/09/2019 Ingenieria En Sitemas Programacion Avanzada
  */
 public class ToTiToLogica {
 
     private char[] tableroJuego = new char[10];
     private char JugadorActual;
+
+    private String nombreJugadorX = "";
+    private String nombreJugadorY = "";
 
     public ToTiToLogica() {
         inicializarTablero();
@@ -40,25 +39,38 @@ public class ToTiToLogica {
         //System.out.print(" \t\t    |   |   ");
     }
 
+    /**
+     * Logica Principal del Juego.
+     */
     private void jugar() {
-        int posicion;
-        char blank = ' ';
+        int posicion = 0;
+        String posicionJugadorX = "";
+        String posicionJugadorY = "";
+        Scanner in = new Scanner(System.in);
 
-        System.out.println("Jugadr del primer moviento es " + getJugadorActual());
+        System.out.println("TO-TI-TO");
+        System.out.print("Nombre Jugador X -> ");
+        nombreJugadorX = in.nextLine();
+        System.out.print("Nombre Jugador Y -> ");
+        nombreJugadorY = in.nextLine();
+
+        System.out.println(nombreJugadorX + " vs " + nombreJugadorY);
+        //System.out.println("Jugadr del primer moviento es " + getJugadorActual());
         dibujarTablero();
+
+        //Ciclo en el cual se repite hasta que no haya mas espacion o bien cuando uno de los 2 jugadores gane!
         do {
             System.out.print("\n\n  jugador " + getJugadorActual() + " elija una posicion -> ");
 
             boolean posTaken = true;
             while (posTaken) {
                 try {
-                    Scanner in = new Scanner(System.in);
                     posicion = in.nextInt();
                     posTaken = verificarPosicion(posicion);
                     if (!posTaken) {
                         tableroJuego[posicion] = getJugadorActual();
                     } else {
-                        System.out.println("Esta posicion ya esta ocupada, Elije otra!");
+                        System.out.print("\nEsta posicion ya esta ocupada, Elije otra -> ");
                     }
                 } catch (Exception e) {
                     System.out.println("Solo se admiten tipos numericos \nEntrada menor o igual a 9");
@@ -66,14 +78,26 @@ public class ToTiToLogica {
                 }
             }
 
+            //System.out.println(posicion);
+            if (getJugadorActual() == 'X') {
+                posicionJugadorX += String.valueOf(posicion);
+                //System.out.println(posicionJugadorX);
+            } else {
+                posicionJugadorY += String.valueOf(posicion);
+                //System.out.println(posicionJugadorY);
+            }
+
             dibujarTablero();
             turnoJugador();
 
-        } while (!verificarJugador2('X') /*verificarGanador() == blank*/);
+        } while (!hayGanador('X') /*verificarGanador() == blank*/);
 
+        System.out.println("------------Movimientos-------------");
+        System.out.println("Movimientos X -> " + posicionJugadorX);
+        System.out.println("Movimientos O -> " + posicionJugadorY);
     }
 
-    private boolean verificarJugador2(char jugador/*, int i*/) {
+    private boolean hayGanador(char jugador/*, int i*/) {
         boolean retorno = false;
 
         //Verificacion de las X
@@ -106,9 +130,9 @@ public class ToTiToLogica {
             System.out.println("");
             System.out.println("Ganador " + jugador);
         } else if (jugador == 'X') {
-            retorno = verificarJugador2('O');
+            retorno = hayGanador('O');
             if (!retorno) {
-                retorno = empate();
+                retorno = hayEmpate();
             }
         }
         return retorno;
@@ -132,15 +156,11 @@ public class ToTiToLogica {
 
     }
 
-    private String getTitle() {
-        return "Tic Tac Toe";
-    }
-
     private char getJugadorActual() {
         return JugadorActual;
     }
 
-    private boolean empate() {
+    private boolean hayEmpate() {
         boolean retorno = false;
         for (int i = 1; i < 10; i++) {
             if (tableroJuego[i] == 'X' || tableroJuego[i] == 'O') {
@@ -154,4 +174,5 @@ public class ToTiToLogica {
         }
         return retorno;
     }
+
 }
