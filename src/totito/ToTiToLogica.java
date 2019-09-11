@@ -80,10 +80,10 @@ public class ToTiToLogica {
 
             //System.out.println(posicion);
             if (getJugadorActual() == 'X') {
-                posicionJugadorX += String.valueOf(posicion);
+                posicionJugadorX += String.valueOf(posicion) + ", ";
                 //System.out.println(posicionJugadorX);
             } else {
-                posicionJugadorY += String.valueOf(posicion);
+                posicionJugadorY += String.valueOf(posicion) + ", ";
                 //System.out.println(posicionJugadorY);
             }
 
@@ -92,9 +92,13 @@ public class ToTiToLogica {
 
         } while (!hayGanador('X') /*verificarGanador() == blank*/);
 
+        //System.out.println(posicionJugadorX.length());
+        //System.out.println(posicionJugadorY.length());
+        // System.out.println(posicionJugadorX.substring(0, (posicionJugadorX.length() - 2)));
         System.out.println("------------Movimientos-------------");
-        System.out.println("Movimientos X -> " + posicionJugadorX);
-        System.out.println("Movimientos O -> " + posicionJugadorY);
+        System.out.println("Mov. de X en posiciones -> [" + posicionJugadorX.substring(0, (posicionJugadorX.length() - 2)) + "]");
+        System.out.println("Mov. de O en posiciones -> [" + posicionJugadorY.substring(0, (posicionJugadorY.length() - 2)) + "]");
+        System.out.println("------------------------------------");
     }
 
     private boolean hayGanador(char jugador/*, int i*/) {
@@ -127,8 +131,9 @@ public class ToTiToLogica {
         }
 
         if (retorno) {
-            System.out.println("");
-            System.out.println("Ganador " + jugador);
+            System.out.println("\n--------------Ganador---------------");
+            System.out.println("\t     Ganador " + jugador);
+            System.out.println("------------------------------------\n");
         } else if (jugador == 'X') {
             retorno = hayGanador('O');
             if (!retorno) {
